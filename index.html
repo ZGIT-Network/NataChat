@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+    <meta charset="utf-8">
+    <title>NataChat Test</title>
+</head>
+<body>
+<input id='host' value="127.0.0.1">
+<button onclick="connect()">Connect to Natachat Server</button>
+<br><br>
+<input id="msg">
+<button onclick="send()">Send Message</button>
+<div id="output"></div>
+
+<script>
+    function connect(){
+        ws = new WebSocket("ws://"+host.value+":8765")
+        ws.onopen = function(evt) { writeToScreen("Connected!") };
+        ws.onmessage = function (evt) { writeToScreen(evt.data) };
+    }
+    function send()
+    {
+        message = msg.value;
+        if(message == '')
+        {
+            writeToScreen("<p style='color: red;'>Cannot send empty message to server!</p>");
+        } else {
+            ws.send(message);
+            msg.value = '';
+        }
+
+    }
+    function writeToScreen(message)
+    {
+        var pre = document.createElement("p");
+        pre.innerHTML = message;
+        output.appendChild(pre);
+    }
+</script>
+</body>
+</html>
