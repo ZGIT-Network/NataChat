@@ -14,7 +14,7 @@ async def talk(websockets, path):
                 msg = msg_time +'Hello Welcome to Natachat Server! User' + str(websockets.remote_address)
                 print(log_time +'New client connected, User IP'+ str(websockets.remote_address))
             else:
-                msg = msg_time + ' User '+str(websockets.remote_address)+'Say:' +str(await websockets.recv())
+                msg = msg_time + ' User '+str(websockets.remote_address)+'Say: ' +str(await websockets.recv())
 
                 print(msg)
             await asyncio.wait([ws.send(msg) for ws in cs])

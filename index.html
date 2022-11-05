@@ -5,36 +5,64 @@
     <title>NataChat Test</title>
 </head>
 <body>
-<input id='host' value="127.0.0.1">
-<button onclick="connect()">Connect to Natachat Server</button>
-<br><br>
-<input id="msg">
-<button onclick="send()">Send Message</button>
+<input id='host' placeholder="Server ip" value="127.0.0.1">
+<button onclick="connect()" id="con">Connect to Natachat Server</button><p id="status" style="visibility: hidden;">Connected!</p>
+
+<br>
+<input id="msg" placeholder="Enter here..." disabled>
+<button onclick="send()" id="send" disabled>Send Message</button>
+<button onclick="clear()" id="clear" disabled>Clear Screen</button>
 <div id="output"></div>
 
 <script>
     function connect(){
         ws = new WebSocket("ws://"+host.value+":8765")
         ws.onopen = function(evt) { writeToScreen("Connected!") };
-        ws.onmessage = function (evt) { writeToScreen(evt.data) };
+        ws.onmessage = function (evt) {
+            writeToScreen(evt.data);
+            document.getElementById('con').disabled = true
+            document.getElementById('host').disabled = true
+            document.getElementById('status').style.visibility="visible"
+            document.getElementById('send').disabled = false
+            document.getElementById('clear').disabled = false
+            document.getElementById('msg').disabled = false
+        };
     }
     function send()
     {
         message = msg.value;
+        if (ws.readyState===1) {
         if(message == '')
         {
-            writeToScreen("<p style='color: red;'>Cannot send empty message to server!</p>");
+            writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
         } else {
+
             ws.send(message);
             msg.value = '';
+
+
         }
 
+        } else {
+            document.getElementById('con').disabled = false
+            document.getElementById('host').disabled = false
+            document.getElementById('status').style.visibility="hidden"
+            document.getElementById('send').disabled = true
+            document.getElementById('clear').disabled = true
+            document.getElementById('msg').disabled = true
+                writeToScreen("<p style='color: red;'>Connection Lost!</p>");
+            }
     }
     function writeToScreen(message)
     {
         var pre = document.createElement("p");
         pre.innerHTML = message;
         output.appendChild(pre);
+    }
+
+    function clear()
+    {
+        document.getElementById('output').innerHTML = '';
     }
 </script>
 </body>
