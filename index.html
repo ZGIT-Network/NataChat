@@ -6,7 +6,7 @@
 </head>
 <body>
 <input id='host' placeholder="Server ip" value="127.0.0.1">
-<button onclick="connect()" id="con">Connect to Natachat Server</button><p id="status" style="visibility: hidden;">Connected!</p>
+<button onclick="connect()" id="con">Connect to Natachat Server</button> <button onclick="clo_con()" id="clo" disabled>Disconnect</button><p id="status" style="visibility: hidden;">Connected!</p>
 
 <br>
 <input id="msg" placeholder="Enter here..." disabled>
@@ -16,6 +16,7 @@
 
 <script>
     function connect(){
+        console.log('Connecting...')
         ws = new WebSocket("ws://"+host.value+":8765")
         ws.onopen = function(evt) { writeToScreen("Connected!") };
         ws.onmessage = function (evt) {
@@ -26,7 +27,13 @@
             document.getElementById('send').disabled = false
             document.getElementById('clear').disabled = false
             document.getElementById('msg').disabled = false
+            document.getElementById('clo').disabled = false
+            console.log('Connected!')
         };
+        ws.onerror = function () {
+            console.log('%c Connecting Failed!','color: red')
+        }
+
     }
     function send()
     {
@@ -48,6 +55,7 @@
             document.getElementById('host').disabled = false
             document.getElementById('status').style.visibility="hidden"
             document.getElementById('send').disabled = true
+            document.getElementById('clo').disabled = true
             document.getElementById('clear').disabled = true
             document.getElementById('msg').disabled = true
                 writeToScreen("<p style='color: red;'>Connection Lost!</p>");
@@ -59,7 +67,22 @@
         pre.innerHTML = message;
         output.appendChild(pre);
     }
+    function clo_con()
+    {
+        ws.close ()
 
+        ws.onclose = function (evt) {
+            writeToScreen('Disconnected!');
+            document.getElementById('con').disabled = false
+            document.getElementById('host').disabled = false
+            document.getElementById('status').style.visibility="hidden"
+            document.getElementById('send').disabled = true
+            document.getElementById('clear').disabled = true
+            document.getElementById('msg').disabled = true
+            document.getElementById('clo').disabled = true
+            console.log('Disconnect!')
+        };
+    }
     function clear()
     {
         document.getElementById('output').innerHTML = '';
