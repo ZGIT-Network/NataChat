@@ -15,10 +15,11 @@ asyncio
 websockets
 wheel
 prompt_toolkit
+logging
 ````
 或使用此指令：
 
-``pip3 install  asyncio websockets wheel prompt_toolkit``
+``pip3 install  asyncio websockets wheel prompt_toolkit logging``
 
 ****
 #### 关于客户端：
