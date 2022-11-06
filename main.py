@@ -11,7 +11,7 @@ msg_time = time.strftime('\033[1m[%Y-%m-%d %H:%M:%S]\033[0m')
 cs = set()
 
 import time
-sum = 3         # 设置倒计时时间
+sum = 1         # 设置倒计时时间
 timeflush = 0.2  # 设置屏幕刷新的间隔时间
 for i in range(0, int(sum/timeflush)):
     list = ["\\", "|", "/", "—"]
