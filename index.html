@@ -5,10 +5,12 @@
     <title>NataChat Test</title>
 </head>
 <body>
-<input id='host' placeholder="Server ip" value="127.0.0.1">
-<button onclick="connect()" id="con">Connect to Natachat Server</button> <button onclick="clo_con()" id="clo" disabled>Disconnect</button><p id="status" style="visibility: hidden;">Connected!</p>
+Server Address: <br>
+<input id='host' placeholder="Server ip" value="127.0.0.1">:<input id='port' placeholder="Server Port" value="8765">
+<button onclick="connect()" id="con">Connect to Natachat Server</button> <button onclick="clo_con()" id="clo" disabled>Disconnect</button><p id="status" style="visibility: hidden;">Server Connected!</p>
 
 <br>
+Message:<br>
 <input id="msg" placeholder="Enter here..." disabled>
 <button onclick="send()" id="send" disabled>Send Message</button>
 <button onclick="clear()" id="clear" disabled>Clear Screen</button>
@@ -17,12 +19,13 @@
 <script>
     function connect(){
         console.log('Connecting...')
-        ws = new WebSocket("ws://"+host.value+":8765")
+        ws = new WebSocket("ws://"+host.value+':'+ port.value)
         ws.onopen = function(evt) { writeToScreen("Connected!") };
         ws.onmessage = function (evt) {
             writeToScreen(evt.data);
             document.getElementById('con').disabled = true
             document.getElementById('host').disabled = true
+            document.getElementById('port').disabled = true
             document.getElementById('status').style.visibility="visible"
             document.getElementById('send').disabled = false
             document.getElementById('clear').disabled = false
@@ -32,6 +35,7 @@
         };
         ws.onerror = function () {
             console.log('%c Connecting Failed!','color: red')
+            writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
         }
 
     }
@@ -53,17 +57,18 @@
         } else {
             document.getElementById('con').disabled = false
             document.getElementById('host').disabled = false
+            document.getElementById('port').disabled = false
             document.getElementById('status').style.visibility="hidden"
             document.getElementById('send').disabled = true
             document.getElementById('clo').disabled = true
             document.getElementById('clear').disabled = true
             document.getElementById('msg').disabled = true
-                writeToScreen("<p style='color: red;'>Connection Lost!</p>");
+                writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
             }
     }
     function writeToScreen(message)
     {
-        var pre = document.createElement("p");
+        var pre = document.createElement("div");
         pre.innerHTML = message;
         output.appendChild(pre);
     }
@@ -75,6 +80,7 @@
             writeToScreen('Disconnected!');
             document.getElementById('con').disabled = false
             document.getElementById('host').disabled = false
+            document.getElementById('port').disabled = false
             document.getElementById('status').style.visibility="hidden"
             document.getElementById('send').disabled = true
             document.getElementById('clear').disabled = true
