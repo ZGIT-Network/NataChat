@@ -18,7 +18,7 @@ prompt_toolkit
 ````
 或使用此指令：
 
-``pip3 install  asyncio ,websockets ,wheel ,prompt_toolkit``
+``pip3 install  asyncio websockets wheel prompt_toolkit``
 
 ****
 #### 关于客户端：
