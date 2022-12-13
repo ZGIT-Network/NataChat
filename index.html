@@ -1,43 +1,73 @@
 <!DOCTYPE html>
-<html lang="zh-cn" >
+<html lang="en" >
 <head>
     <meta charset="utf-8">
-    <title>NataChat Test</title>
+    <title>NataChat Demo 1.3</title>
 </head>
-<body>
+<body onkeydown="if (event.keyCode===13) document.all.send.click ()">
 Server Address: <br>
-<input id='host' placeholder="Server ip" value="127.0.0.1">:<input id='port' placeholder="Server Port" value="8765">
-<button onclick="connect()" id="con">Connect to Natachat Server</button> <button onclick="clo_con()" id="clo" disabled>Disconnect</button><p id="status" style="visibility: hidden;">Server Connected!</p>
-
-<br>
+<input id='host' placeholder="Server ip" size="30" value="ws://127.0.0.1">:<input id='port' placeholder="Server Port" size="5" value="8765" maxlength="5">
+<button onclick="connect()" id="con">Connect to a Natachat Server</button><p id="status" style="visibility: hidden; border:1px solid black; backgroud:green; background: green; color: white; width: 143px;">Server Connected!</p>
 Message:<br>
-<input id="msg" placeholder="Enter here..." disabled>
-<button onclick="send()" id="send" disabled>Send Message</button>
-<button onclick="clear()" id="clear" disabled>Clear Screen</button>
-<div id="output"></div>
+
+
+<div id="output" style="height:500px; overflow-y:auto; border:1px solid black;"></div>
+Input:<br>
+<textarea id="msg" placeholder="Enter here..." style="resize:none;width: 99.5%;" maxlength="500"  rows="5" disabled ></textarea>
+<button onclick="send()" id="send" style="display:flex; align-items:flex-end;" disabled>Send Message (Enter)</button>
+<!--<button onclick="clear()" id="clear" disabled>Clear Screen</button>-->
 
 <script>
+var connections = false
+//     window.onload = function autoconnect() {
+//             setTimeout(connect(),3000);    
+//     };
+    
     function connect(){
+        if (connections == false){
         console.log('Connecting...')
-        ws = new WebSocket("ws://"+host.value+':'+ port.value)
-        ws.onopen = function(evt) { writeToScreen("Connected!") };
+        ws = new WebSocket(host.value+':'+ port.value)
+        ws.onopen = function(evt) { 
+            writeToScreen("Connected!<br><div style='color: red;'>Tips: This program has not resist XSS vulnerability, You may encounter security problems.</div>") 
+        console.log('New Connection Connected! Tips: This program has not resist XSS vulnerability, You may encounter security problems.')};
         ws.onmessage = function (evt) {
             writeToScreen(evt.data);
-            document.getElementById('con').disabled = true
+            document.getElementById('con').innerHTML = "DISCONNECT"
             document.getElementById('host').disabled = true
             document.getElementById('port').disabled = true
             document.getElementById('status').style.visibility="visible"
             document.getElementById('send').disabled = false
-            document.getElementById('clear').disabled = false
+            // document.getElementById('clear').disabled = false
             document.getElementById('msg').disabled = false
-            document.getElementById('clo').disabled = false
-            console.log('Connected!')
+            
+            connections = true;
         };
         ws.onerror = function () {
             console.log('%c Connecting Failed!','color: red')
             writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
+            connections = false;
+            }
+        } else {
+            disconnect();
         }
 
+    }
+    function disconnect(){
+        ws.close ()
+
+        ws.onclose = function (evt) {
+            connections = false;
+            writeToScreen('Disconnected!');
+            document.getElementById('con').innerHTML = "Connect to a Natachat Server"
+            document.getElementById('host').disabled = false
+            document.getElementById('port').disabled = false
+            document.getElementById('status').style.visibility="hidden"
+            document.getElementById('send').disabled = true
+            //document.getElementById('clear').disabled = true
+            document.getElementById('msg').disabled = true
+
+            console.log('Disconnect!')
+        };
     }
     function send()
     {
@@ -61,7 +91,7 @@ Message:<br>
             document.getElementById('status').style.visibility="hidden"
             document.getElementById('send').disabled = true
             document.getElementById('clo').disabled = true
-            document.getElementById('clear').disabled = true
+            // document.getElementById('clear').disabled = true
             document.getElementById('msg').disabled = true
                 writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
             }
@@ -71,28 +101,15 @@ Message:<br>
         var pre = document.createElement("div");
         pre.innerHTML = message;
         output.appendChild(pre);
-    }
-    function clo_con()
-    {
-        ws.close ()
-
-        ws.onclose = function (evt) {
-            writeToScreen('Disconnected!');
-            document.getElementById('con').disabled = false
-            document.getElementById('host').disabled = false
-            document.getElementById('port').disabled = false
-            document.getElementById('status').style.visibility="hidden"
-            document.getElementById('send').disabled = true
-            document.getElementById('clear').disabled = true
-            document.getElementById('msg').disabled = true
-            document.getElementById('clo').disabled = true
-            console.log('Disconnect!')
-        };
+        console.log(message);
     }
     function clear()
     {
         document.getElementById('output').innerHTML = '';
+        var elem=document.getElementById('output');
+        elem.removeChild(elem);
     }
 </script>
+
 </body>
 </html>
