@@ -2,11 +2,12 @@ import websockets
 import asyncio
 import time
 import atexit
-from prompt_toolkit import prompt
 import logging
+from prompt_toolkit import prompt
 
 
-log_time = time.strftime('\033[1m[%y-%m-%d %H:%M:%S]\033[0m')
+
+log_time = time.strftime('[%y-%m-%d %H:%M:%S]')
 msg_time = time.strftime('[%Y-%m-%d %H:%M:%S]')
 
 cs = set()
@@ -31,8 +32,8 @@ async def talk(websockets, path):
         logging.info('A WebSocket Client Disconnected. IP' + str(websockets.remote_address))
 
 
-print(log_time + 'server running on \033[7m[localhost:8765]\033[0m')
-logging.warning('server running on \033[7m[localhost:8765]\033[0m')
+print(log_time + 'server running on [localhost:8765]')
+logging.info('server running on [localhost:8765]')
 
 
 
