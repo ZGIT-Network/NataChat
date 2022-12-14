@@ -30,8 +30,8 @@
     <div class="mdui-card-content">
 <div class="mdui-textfield">
   <label class="mdui-textfield-label">Server Address</label>
-  <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="wss://natachat-server.zyghit.cn"/>
-  <button class="mdui-btn" onclick="connect()" id="con">Connect to a Natachat Server </button>
+  <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765"/>
+  <button class="mdui-btn mdui-shadow-3" onclick="connect()" id="con">Connect to a Natachat Server </button>
 </div>
 
 <div class="mdui-textfield">
@@ -56,7 +56,7 @@
   <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled></textarea>
   
 </div>
-<button onclick="send()" id="send" class="mdui-btn" disabled>Send <i class="mdui-icon material-icons">&#xe163;</i></button>
+<button onclick="send()" id="send" class="mdui-btn mdui-shadow-3" disabled>Send <i class="mdui-icon material-icons">&#xe163;</i></button>
 <!--<button onclick="clear()" id="clear" disabled>Clear Screen</button>-->
 </div></div>
 </div>
