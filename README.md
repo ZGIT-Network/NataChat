@@ -7,7 +7,7 @@
 #### Server端启动指令：
 `` python main.py``
 
-Server端Python版本:  **Python3.7以下 或 Python3.0以上版本** 
+Server端Python版本:  **Python3.10以上版本** 
 
 **注意:** 使用前请使用 **pip install** 安装下列模块依赖：
 ````
