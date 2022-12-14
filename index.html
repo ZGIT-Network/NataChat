@@ -1,215 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  
+  <head>
     <meta charset="utf-8">
-    <title>NataChat Demo 1.8</title>
-    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css"/>
-    <script  src="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
-</head>
-<body onkeydown="if (event.keyCode===13) document.all.send.click ()" class="mdui-theme-primary-indigo">
+    <title>NataChat Demo v1.8</title>
+    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css" />
+    <script src="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js">
+    </script>
+  </head>
+  
+  <body class="mdui-theme-primary-indigo">
     <div class="mdui-toolbar mdui-color-theme mdui-shadow-4">
-  <span class="mdui-typo-title">NataChat Demo 1.8</span>
-  <div class="mdui-toolbar-spacer"></div>
-  <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: '刷新页面'}">
-    <i class="mdui-icon material-icons">refresh</i>
-  </a>
-
-</div>
-    <div class="mdui-container mdui-m-t-2 mdui-m-b-2" >
-    
-  
-<div class="mdui-card " style="margin-block: 10px;">
-    <div class="mdui-card-content">
-    NataChat is a Open Soucre Project on Github. <a class=" mdui-ripple mdui-text-color-black-text" href="https://github.com/ZGIT-Network/NataChat" target="_blank">Click here to Repository</a>
+      <span class="mdui-typo-title">NataChat Demo v1.8</span>
+      <div class="mdui-toolbar-spacer">
+      </div>
+      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: '刷新页面'}">
+        <i class="mdui-icon material-icons">refresh</i>
+      </a>
     </div>
-</div>
-<div class="mdui-card " style="margin-block: 10px;">
-      <div class="mdui-card-primary">
-    Config
-  </div>
-    <div class="mdui-card-content">
-<div class="mdui-textfield">
-  <label class="mdui-textfield-label">Server Address</label>
-  <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765"/>
-  <button class="mdui-btn mdui-shadow-3" onclick="connect()" id="con">Connect to a Natachat Server </button>
-</div>
-
-<div class="mdui-textfield">
-<label class="mdui-textfield-label">Username</label> 
-<input class="mdui-textfield-input" id='username' maxlength="25" placeholder="username" value="">
-</div>
+    <div class="mdui-container pjax-container">
+      <div class="mdui-row">
+        <div class="mdui-col-sm-12 mdui-col-md-12">
+          <div class="mdui-card " style="margin-block: 10px;">
+            <div class="mdui-card-content"><i class="mdui-icon material-icons">info_outline</i> NataChat is a Open Soucre Project on Github.
+              <a class=" mdui-ripple mdui-text-color-black-text" href="https://github.com/ZGIT-Network/NataChat" target="_blank">Click here to Repository</a>
+            </div>
+          </div>
+          <div class="mdui-card " style="margin-block: 10px;">
+            <div class="mdui-card-primary">Config</div>
+            <div class="mdui-card-content">
+              <div class="mdui-textfield">
+                <label class="mdui-textfield-label">Server Address</label>
+                <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765" />
+                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to a Natachat Server</button>
+              </div>
+              <div class="mdui-textfield">
+                <label class="mdui-textfield-label">Username</label>
+                <input class="mdui-textfield-input" id='username' maxlength="25" placeholder="username">
+              </div>
+            </div>
+          </div>
+          <div class="mdui-card " style="margin-block: 10px;">
+            <div class="mdui-card-primary">Message</div>
+            <div class="mdui-card-content">
+              <div style="height:500px; overflow-y:auto;" class="mdui-shadow-0" id="content">
+                <ul class="mdui-list ">
+                  <div id="output" style="margin: 5px;">
+                  </div>
+                </ul>
+              </div>
+              <div class="mdui-textfield">
+                <label class="mdui-textfield-label">Input</label>
+                <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled onkeyup="EnterKey()">
+                </textarea>
+              </div>
+              <button onclick="send()" id="send" class="mdui-btn mdui-shadow-3 mdui-ripple" disabled>Send
+                <i class="mdui-icon material-icons">&#xe163;</i>
+              </button>
+              <!--<button onclick="clear()" id="clear" disabled>Clear Screen</button>-->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    <script>
+        var $ = mdui.$;
+      var connections = false;
 
-<div class="mdui-card " style="margin-block: 10px;">
-      <div class="mdui-card-primary">
-    Message
-  </div>
-    <div class="mdui-card-content">
-<div  style="height:500px; overflow-y:auto;" class="mdui-shadow-0" id="content">
-        <ul class="mdui-list ">
-        <div id="output" style="margin: 5px;"></div>
-        </ul>
-</div>
-<div class="mdui-textfield">
-    <label class="mdui-textfield-label">Input</label>
-  <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled></textarea>
-  
-</div>
-<button onclick="send()" id="send" class="mdui-btn mdui-shadow-3" disabled>Send <i class="mdui-icon material-icons">&#xe163;</i></button>
-<!--<button onclick="clear()" id="clear" disabled>Clear Screen</button>-->
-</div></div>
-</div>
-<script>
-var $ = mdui.$;
-var connections = false
+      window.onload = function autoconnect() {
+        var id = "";
+        id = Math.ceil(Math.random() * 10000) ;
+        if (username == "") {
+          var uname = document.getElementById('username').value ;
+          document.getElementById('username').value = "guest" + id;
+        };
+        document.getElementById('username').value = document.cookie;
+        setTimeout(connect(), 5000);
 
-    window.onload = function autoconnect() {
-            var id = ""
-            id = Math.ceil(Math.random()*10000)
-            if (username == ""){
-            var uname = document.getElementById('username').value
-            document.getElementById('username').value = uname + id
-            }
-            document.getElementById('username').value = document.cookie;
-            setTimeout(connect(),5000);
-            
-            
-    };
-    
-    function connect(){
-        if(username.value == ""){
-            mdui.snackbar({
-                message: 'Please set a username!',
-                position: 'right-bottom',
-            });
+      };
+      function EnterKey(event) {
+        event = event || window.event;
+        if (event.keyCode == 13) {
+          send();
+        };
+      };
+
+      function connect() {
+        if (username.value == "") {
+          mdui.snackbar({
+            message: 'Please set a username!',
+            position: 'right-bottom',
+          });
         } else {
-            document.cookie = document.getElementById('username').value;
-            
-        if (connections == false){
-        console.log('Connecting...')
-        var status1 = 0
-        //ws = new WebSocket(host.value+':'+ port.value)
-        ws = new WebSocket(host.value+'/user/'+username.value)
-        ws.onopen = function(evt) { 
-        console.log('New Connection Connected! Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through Web console.')
-            
-            mdui.snackbar({
+          document.cookie = document.getElementById('username').value;
+
+          if (connections == false) {
+            console.log('Connecting...') ;
+            var status1 = 0;
+            //ws = new WebSocket(host.value+':'+ port.value)
+            ws = new WebSocket(host.value + '/user/' + username.value) ;
+            ws.onopen = function(evt) {
+              console.log('New Connection Connected! Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through Web console.');
+
+              mdui.snackbar({
                 message: 'Server Connected!',
                 position: 'right-bottom',
-            });
-        };
-        ws.onmessage = function (evt) {
-            writeToScreen(evt.data);
-            document.getElementById('con').innerHTML = "DISCONNECT"
-            document.getElementById('host').disabled = true
-            document.getElementById('username').disabled = true
-            status1++
-            document.getElementById('send').disabled = false
-            // document.getElementById('clear').disabled = false
-            document.getElementById('msg').disabled = false
-            
-            
-            
-            
-            connections = true;
-        };
-        ws.onerror = function () {
-            console.log('%cConnecting Failed!','color: red')
-            mdui.snackbar({
+              });
+            };
+            ws.onmessage = function(evt) {
+              writeToScreen(evt.data);
+              document.getElementById('con').innerHTML = "DISCONNECT";
+              document.getElementById('host').disabled = true ;
+              document.getElementById('username').disabled = true ;
+              status1++;
+              document.getElementById('send').disabled = false;
+              // document.getElementById('clear').disabled = false
+              document.getElementById('msg').disabled = false;
+
+              connections = true;
+            };
+            ws.onerror = function() {
+              console.log('%cConnecting Failed!', 'color: red') ;
+              mdui.snackbar({
                 message: 'Can\'t connect to the server. Is the server IP and port correct? Is the server started?',
                 position: 'right-bottom',
-            });
-            //writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
-            connections = false;
-            }
-        } else {
+              });
+              //writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
+              connections = false;
+            };
+          } else {
             disconnect();
-        }
-        }
-    }
-    function disconnect(){
-        ws.close ()
-
-        ws.onclose = function (evt) {
-            connections = false;
-            // writeToScreen('Disconnected!');
-            mdui.snackbar({
-                message: 'Disconnected',
-                position: 'right-bottom',
-            });
-            document.getElementById('con').innerHTML = "Connect to a Natachat Server"
-            document.getElementById('host').disabled = false
-            document.getElementById('username').disabled = false
-            // document.getElementById('status').style.visibility="hidden"
-            document.getElementById('send').disabled = true
-            //document.getElementById('clear').disabled = true
-            document.getElementById('msg').disabled = true
-            
-            console.log('Disconnect!')
+          };
         };
-    }
-    function send()
-    {
+      };
+      function disconnect() {
+        ws.close()
+
+        ws.onclose = function(evt) {
+          connections = false;
+          // writeToScreen('Disconnected!');
+          mdui.snackbar({
+            message: 'Disconnected',
+            position: 'right-bottom',
+          });
+          document.getElementById('con').innerHTML = "Connect to a Natachat Server";
+          document.getElementById('host').disabled = false ;
+          document.getElementById('username').disabled = false;
+          // document.getElementById('status').style.visibility="hidden"
+          document.getElementById('send').disabled = true;
+          //document.getElementById('clear').disabled = true
+          document.getElementById('msg').disabled = true;
+
+          console.log('Disconnect!');
+        };
+      };
+      function send() {
         message = msg.value;
-        if (ws.readyState===1) {
-        if(message == '')
-        {
+        if (ws.readyState === 1) {
+          if (message == '') {
             writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
-        } else {
+          } else {
 
             ws.send(message);
-            msg.value = '';
-            
-        
+            document.getElementById('msg').value = "";
 
-        }
+          };
 
         } else {
-            document.getElementById('con').disabled = false
-            document.getElementById('host').disabled = false
-            document.getElementById('username').disabled = false
-            // document.getElementById('status').style.visibility="hidden"
-            document.getElementById('send').disabled = true
-            document.getElementById('clo').disabled = true
-            // document.getElementById('clear').disabled = true
-            document.getElementById('msg').disabled = true
-            // writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
-            mdui.snackbar({
-                message: 'Server Connection Lost!',
-                position: 'right-bottom',
-            });
-            }
-    }
-    function writeToScreen(message)
-    {
+          document.getElementById('con').disabled = false ;
+          document.getElementById('host').disabled = false ;
+          document.getElementById('username').disabled = false;
+          // document.getElementById('status').style.visibility="hidden"
+          document.getElementById('send').disabled = true;
+          // document.getElementById('clo').disabled = true
+          // document.getElementById('clear').disabled = true
+          document.getElementById('msg').disabled = true;
+          // writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
+          mdui.snackbar({
+            message: 'Server Connection Lost!',
+            position: 'right-bottom',
+          });
+        };
+      };
+      function writeToScreen(message) {
         var pre = document.createElement("li");
-        pre.setAttribute("class","mdui-list-item mdui-ripple")
-        mdui.mutation()
-        var msg=""
-        msg = message.replace(/<style.*?>|<\/style>/ig,"").replace(/<link.*?>|<\/link>/ig,"").replace(/<script.*?>|<\/script>/ig,"").replace(/onerror=".*?"/ig,"").replace(/onclick=".*?"/ig,"").replace(/onerror=.*?/ig,"").replace(/onclick=.*?/ig,"").replace(/<meta.*?>|<\/meta>/ig,"").replace(/javascript:*?/ig,"");
-        
-        pre.innerHTML = decodeURI(msg);
-        
-        output.appendChild(pre);
-        
-        console.log(message);
-        console.log('已过滤：\n'+msg);
-        
-    }
-    
-    function updateScroll(){
-    var element = document.getElementById("output");
-    element.scrollTop = element.scrollHeight;
-    }
-    
-    function clear()
-    {
-        document.getElementById('output').innerHTML = '';
-        var elem=document.getElementById('output');
-        elem.removeChild(elem);
-    }
-</script>
+        pre.setAttribute("class", "mdui-list-item mdui-ripple");
+        mdui.mutation();
+        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "");
 
-</body>
+        pre.innerHTML = decodeURI(msg);
+
+        output.appendChild(pre);
+
+        console.log(message);
+        console.log('已过滤：\n' + msg);
+
+      };
+
+      function updateScroll() {
+        var element = document.getElementById("output");
+        element.scrollTop = element.scrollHeight;
+      };
+
+      function clear() {
+        document.getElementById('output').innerHTML = '';
+        var elem = document.getElementById('output');
+        elem.removeChild(elem);
+      };
+      </script>
+  </body>
+
 </html>
