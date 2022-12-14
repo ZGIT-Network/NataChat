@@ -7,6 +7,7 @@
 <body onkeydown="if (event.keyCode===13) document.all.send.click ()">
 Server Address: <br>
 <input id='host' placeholder="Server ip" size="30" value="ws://127.0.0.1">:<input id='port' placeholder="Server Port" size="5" value="8765" maxlength="5">
+<input id='username' placeholder="username" size="5" style="padding-left: 2px;">
 <button onclick="connect()" id="con">Connect to a Natachat Server</button><p id="status" style="visibility: hidden; border:1px solid black; backgroud:green; background: green; color: white; width: 143px;">Server Connected!</p>
 Message:<br>
 
@@ -28,7 +29,7 @@ var connections = false
     function connect(){
         if (connections == false){
         console.log('Connecting...')
-        ws = new WebSocket(host.value+':'+ port.value)
+        ws = new WebSocket(host.value+':'+ port.value+'/user/'+username.value)
         ws.onopen = function(evt) { 
             writeToScreen("Connected!<br><div style='color: red;'>Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through F12 console.</div>") 
         console.log('New Connection Connected! Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through F12 console.')};
