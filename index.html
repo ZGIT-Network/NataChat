@@ -103,7 +103,7 @@ var connections = false
         var pre = document.createElement("div");
         
         var msg=""
-        msg = message.replace(/<style.*?>|<\/style>/ig,"").replace(/<link.*?>|<\/link>/ig,"").replace(/<script.*?>|<\/script>/ig,"").replace(/onerror=".*?"/ig,"").replace(/onclick=".*?"/ig,"");
+        msg = message.replace(/<style.*?>|<\/style>/ig,"").replace(/<link.*?>|<\/link>/ig,"").replace(/<script.*?>|<\/script>/ig,"").replace(/onerror=".*?"/ig,"").replace(/onclick=".*?"/ig,"").replace(/onerror=.*?/ig,"").replace(/onclick=.*?/ig,"").replace(/<meta.*?>|<\/meta>/ig,"");
         
         pre.innerHTML = msg;
         
