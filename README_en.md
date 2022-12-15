@@ -34,7 +34,7 @@ Or use this command:
 ****
 #### About the client:
 
-The '` index. html' 'in the code base is the client, which only includes the use of online clients. If you need more, you can develop it yourself.
+The ``index. html`` in the code base is the client, which only includes the use of online clients. If you need more, you can develop it yourself.
 
 ***
 
