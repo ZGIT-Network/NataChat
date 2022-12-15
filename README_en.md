@@ -2,9 +2,11 @@
 
 A simple HTML5 + Python online chat room. Start main.py directly.
 
-English|[中文](https://github.com/ZGIT-Network/NataChat)
+ English | [中文](https://github.com/ZGIT-Network/NataChat)
+ 
+ The front end uses [MDUI](https://mdui.org), and the back end only forwards messages. It is written in Python.
 
-The code is relatively basic. The work of novice Xiaobai should not be sprayed by the boss.
+The code is relatively basic. The work of novice noob should not be sprayed by the boss.
 
 Demo Site:[https://natachat.zyghit.cn/](https://natachat.zyghit.cn/)
 
