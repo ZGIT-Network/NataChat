@@ -3,6 +3,8 @@
 
 代码比较基础，新手小白作品，大佬勿喷
 
+演示站点：[https://natachat.zyghit.cn/](https://natachat.zyghit.cn/)
+
 ***
 #### Server端启动指令：
 `` python main.py``
@@ -28,3 +30,6 @@ logging
 
 ***
 欢迎大佬协助编写本库，如果觉得有意思麻烦给个star呗！
+
+部署时需要注意：
+如果网页配置了ssl证书，那么后端Server也应当配置SSL证书以便于通过wss链接，否则可能会出现问题。
