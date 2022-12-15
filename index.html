@@ -14,7 +14,7 @@
       <span class="mdui-typo-title">NataChat Demo v1.8</span>
       <div class="mdui-toolbar-spacer">
       </div>
-      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: '刷新页面'}">
+      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: '刷新'}">
         <i class="mdui-icon material-icons">refresh</i>
       </a>
     </div>
@@ -32,7 +32,7 @@
               <div class="mdui-textfield">
                 <label class="mdui-textfield-label">Server Address</label>
                 <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765" />
-                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to a Natachat Server</button>
+                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to Natachat Server</button>
               </div>
               <div class="mdui-textfield">
                 <label class="mdui-textfield-label">Username</label>
@@ -51,8 +51,7 @@
               </div>
               <div class="mdui-textfield">
                 <label class="mdui-textfield-label">Input</label>
-                <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled onkeyup="EnterKey()">
-                </textarea>
+                <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled onkeyup="EnterKey()"></textarea>
               </div>
               <button onclick="send()" id="send" class="mdui-btn mdui-shadow-3 mdui-ripple" disabled>Send
                 <i class="mdui-icon material-icons">&#xe163;</i>
