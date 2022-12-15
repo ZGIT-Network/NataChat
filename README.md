@@ -1,6 +1,8 @@
 # NataChat
 一个简单的Python在线聊天室,直接启动main.py即可
 
+ [English](https://github.com/ZGIT-Network/NataChat/blob/main/README_en.md) | 中文
+
 代码比较基础，新手小白作品，大佬勿喷
 
 演示站点：[https://natachat.zyghit.cn/](https://natachat.zyghit.cn/)
@@ -27,6 +29,8 @@ logging
 #### 关于客户端：
 
 代码库内的``index.html``即客户端，仅包含在线客户端的使用，有更多需要可自行开发
+
+网页客户端默认语言为英文，可自行翻译或提交 issue 让我搞个中文版
 
 ***
 欢迎大佬协助编写本库，如果觉得有意思麻烦给个star呗！
