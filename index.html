@@ -32,7 +32,7 @@
               <div class="mdui-textfield">
                 <label class="mdui-textfield-label">Server Address</label>
                 <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765" />
-                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to Natachat Server</button>
+                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to a Natachat Server</button>
               </div>
               <div class="mdui-textfield">
                 <label class="mdui-textfield-label">Username</label>
@@ -56,14 +56,22 @@
               <button onclick="send()" id="send" class="mdui-btn mdui-shadow-3 mdui-ripple" disabled>Send
                 <i class="mdui-icon material-icons">&#xe163;</i>
               </button>
-              <!--<button onclick="clear()" id="clear" disabled>Clear Screen</button>-->
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <div class="mdui-dialog" id="dialog">
+  <div class="mdui-dialog-title" id="dialog-title">Warning</div>
+  <div class="mdui-dialog-content" id="dialog-info"></div>
+  <div class="mdui-dialog-actions">
+    <button class="mdui-btn mdui-ripple" id="dialog-btn" mdui-dialog-confirm>OK</button>
+  </div>
+</div>
     <script>
         var $ = mdui.$;
+        var inst = new mdui.Dialog('#dialog');
       var connections = false;
 
       window.onload = function autoconnect() {
@@ -100,7 +108,7 @@
             ws = new WebSocket(host.value + '/user/' + username.value) ;
             ws.onopen = function(evt) {
               console.log('New Connection Connected! Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through Web console.');
-
+                
               mdui.snackbar({
                 message: 'Server Connected!',
                 position: 'right-bottom',
@@ -124,6 +132,10 @@
                 message: 'Can\'t connect to the server. Is the server IP and port correct? Is the server started?',
                 position: 'right-bottom',
               });
+              document.getElementById('dialog-info').innerHTML = "Can\'t connect to the server. Is the server IP and port correct? Is the server started?"
+          document.getElementById('dialog-title').innerHTML = "Warning"
+          document.getElementById('dialog-btn').innerHTML = "I know"
+          inst.open();
               //writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
               connections = false;
             };
@@ -156,8 +168,16 @@
       function send() {
         message = msg.value;
         if (ws.readyState === 1) {
-          if (message == '') {
-            writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
+          if (message == '' || message == ' \n') {
+              mdui.snackbar({
+            message: 'Cannot send empty message to server!',
+            position: 'right-bottom',
+          });
+          document.getElementById('dialog-info').innerHTML = "Cannot send empty message to server!"
+          document.getElementById('dialog-title').innerHTML = "Warning"
+          document.getElementById('dialog-btn').innerHTML = "I know"
+          inst.open();
+            // writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
           } else {
 
             ws.send(message);
@@ -174,11 +194,20 @@
           // document.getElementById('clo').disabled = true
           // document.getElementById('clear').disabled = true
           document.getElementById('msg').disabled = true;
+          document.getElementById('con').innerHTML = "Connect to a Natachat Server";
           // writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
           mdui.snackbar({
             message: 'Server Connection Lost!',
             position: 'right-bottom',
           });
+          document.getElementById('dialog-info').innerHTML = "Cannot send empty message to server!"
+          document.getElementById('dialog-title').innerHTML = "Warning"
+          document.getElementById('dialog-btn').innerHTML = "Reload"
+          $('#dialog').on('confirm.mdui.dialog', function () {
+              window.location.reload()
+                console.log('confirm');
+            });
+          inst.open();
         };
       };
       function writeToScreen(message) {
