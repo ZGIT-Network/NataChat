@@ -94,7 +94,7 @@
 <script type="text/javascript" src="language.json"></script>
 <script>
 
-//语言库一（前端语言库）
+//语言库1（前端语言库）Language library 1 (front-end language library)
 
 // The default language is English
 var lang = "en";
@@ -128,7 +128,7 @@ $(".translate").click(function() {
       </script>
 <script>
     
-    //语言库2 后端js语言库
+    //语言库2 后端js语言库 Language library 2 backend js language library
     if (lang == "zh") {
         var LanguageJson = arrLang.zh;
     } 
@@ -140,7 +140,7 @@ $(".translate").click(function() {
     }
 </script>
    <script>
-    ///////////////////////////////////////////////////////
+    //信息处理 information processing
         // console.log(LanguageJson.Input);
         var $ = mdui.$;
         var inst = new mdui.Dialog('#dialog');
@@ -295,14 +295,14 @@ $(".translate").click(function() {
         var pre = document.createElement("li");
         pre.setAttribute("class", "mdui-list-item mdui-ripple item-body");
         mdui.mutation();
-        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "").replace(/\n/ig, ".");
+        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/<iframe.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<input.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<textarea.*?>|<\/textarea>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "");
         
-        pre.innerHTML = decodeURI(msg);
+        pre.innerHTML = decodeURI(msg).replace(/<iframe.*?>|<\/iframe>/ig, "");
 
         output.appendChild(pre);
 
-        console.log(message);
-        console.log('Filtered/已过滤：\n' + msg);
+        console.log(decodeURI(message));
+        console.log('Filtered/已过滤：\n' + decodeURI(msg).replace(/<iframe.*?>|<\/iframe>/ig, ""));
 
       };
 
