@@ -139,7 +139,7 @@ $(".translate").click(function() {
         var LanguageJson = arrLang.jp;
     }
 </script>
-    <script>
+   <script>
     ///////////////////////////////////////////////////////
         // console.log(LanguageJson.Input);
         var $ = mdui.$;
@@ -248,14 +248,15 @@ $(".translate").click(function() {
       function send() {
         message = msg.value;
         if (ws.readyState === 1) {
-          if (message == '' || message == ' \n') {
+          if (message == '\n' || message == '' || message=='\n\n' || message=='\n\n\n') {
+              document.getElementById('msg').value = "";
               mdui.snackbar({
             message: LanguageJson.Cannotsendemptymessagetoserver,
             position: 'right-bottom',
           });
           document.getElementById('dialog-info').innerHTML = LanguageJson.Cannotsendemptymessagetoserver;
-          document.getElementById('dialog-title').innerHTML = Warning
-          document.getElementById('dialog-btn').innerHTML = Iknow
+          document.getElementById('dialog-title').innerHTML = LanguageJson.Warning
+          document.getElementById('dialog-btn').innerHTML = LanguageJson.Iknow
           inst.open();
             // writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
           } else {
@@ -294,8 +295,8 @@ $(".translate").click(function() {
         var pre = document.createElement("li");
         pre.setAttribute("class", "mdui-list-item mdui-ripple item-body");
         mdui.mutation();
-        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "");
-
+        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "").replace(/\n/ig, ".");
+        
         pre.innerHTML = decodeURI(msg);
 
         output.appendChild(pre);
