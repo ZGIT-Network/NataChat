@@ -140,23 +140,46 @@ $(".translate").click(function() {
     }
 </script>
    <script>
-    //信息处理 information processing
-        // console.log(LanguageJson.Input);
+      //信息处理 information processing
         var $ = mdui.$;
         var inst = new mdui.Dialog('#dialog');
         var connections = false;
-      window.onload = function autoconnect() {
+        window.onload = function autoconnect() {
         var id = "";
-        id = Math.ceil(Math.random() * 10000) ;
+        id = getCookie('UserID')
+        if (id == ""){
+          id = Math.ceil(Math.random() * 10000) ;
+          setCookie('UserID', id, 365);
+          document.getElementById('username').value = getCookie('Username')+id;
+        }
+        
         if (username == "") {
           var uname = document.getElementById('username').value ;
           document.getElementById('username').value = "guest" + id;
         };
-        document.getElementById('username').value = document.cookie;
+        
+        document.getElementById('username').value = getCookie('Username');
         setTimeout(connect(), 5000);
-
+        console.log('UID: #'+id);
 
       };
+      
+      function setCookie(cname,cvalue,exdays){
+            var d = new Date();
+            d.setTime(d.getTime()+(exdays*24*60*60*1000));
+            var expires = "expires="+d.toGMTString();
+            document.cookie = cname+"="+cvalue+"; "+expires;
+        }
+      function getCookie(cname){
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+            return "";
+        }
+        
       function EnterKey(event) {
         event = event || window.event;
         if (event.keyCode == 13) {
@@ -166,28 +189,21 @@ $(".translate").click(function() {
 
       function connect() {
         if (username.value == "") {
-            if (lang == "zh") {
-                mdui.snackbar({
-            message: LanguageJson.Pleasesetausername,
-            position: 'right-bottom',
-          });
-            }else{
           mdui.snackbar({
             message: LanguageJson.Pleasesetausername,
             position: 'right-bottom',
           });
-            }
         } else {
-          document.cookie = document.getElementById('username').value;
-
+          setCookie('Username', document.getElementById('username').value, 30);
+        
           if (connections == false) {
               
             console.log('Connecting...') ;
             var status1 = 0;
             //ws = new WebSocket(host.value+':'+ port.value)
-            ws = new WebSocket(host.value + '/user/' + username.value) ;
+            ws = new WebSocket(host.value + '/user/' + username.value + getCookie('UserID')) ;
             ws.onopen = function(evt) {
-              console.log(XSSWARN);
+              console.log(LanguageJson.XSSWARN);
                 
               mdui.snackbar({
                 message: LanguageJson.ServerConnected,
@@ -295,7 +311,7 @@ $(".translate").click(function() {
         var pre = document.createElement("li");
         pre.setAttribute("class", "mdui-list-item mdui-ripple item-body");
         mdui.mutation();
-        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/<iframe.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<input.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<textarea.*?>|<\/textarea>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "");
+        var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/<iframe.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<input.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<textarea.*?>|<\/textarea>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "").replace(/onresize*?/ig, "").replace(/onload*?/ig, "").replace(/mouseenter*?/ig, "").replace(/onplay=*?/ig, "").replace(/onplaying*?/ig, "").replace(/oncanplay*?/ig, "").replace(/<video.*?/ig, "").replace(/<canvas.*?/ig, "").replace(/\n/ig, "<br>");
         
         pre.innerHTML = decodeURI(msg).replace(/<iframe.*?>|<\/iframe>/ig, "");
 
