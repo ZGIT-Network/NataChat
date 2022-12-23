@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   
   <head>
     <meta charset="utf-8">
-    <title>NataChat Demo v1.8</title>
+    <title class="lang" key="Title">NataChat Demo</title>
     <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css" />
     <script src="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js">
     </script>
+    
   </head>
   
   <body class="mdui-theme-primary-indigo">
     <div class="mdui-toolbar mdui-color-theme mdui-shadow-4">
-      <span class="mdui-typo-title">NataChat Demo v1.8</span>
+      <span class="mdui-typo-title lang" key="Title">NataChat</span>
       <div class="mdui-toolbar-spacer">
       </div>
-      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: '刷新'}">
+      <ul class="mdui-menu" id="langmenu">
+      <li class="mdui-menu-item">
+        <a href="javascript:;"  id="en" class="translate mdui-ripple">English</a>
+      </li>
+      <li class="mdui-menu-item">
+        <a href="javascript:;" id="zh" class="translate mdui-ripple">简体中文</a>
+      </li>
+      <li class="mdui-menu-item">
+        <a href="javascript:;" id="jp" class="translate mdui-ripple">日本語</a>
+      </li>
+    </ul>
+      <button class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: 'Language/语言'}"  mdui-menu="{target: '#langmenu'}">
+        <i class="mdui-icon material-icons" >language</i>
+      </button>
+      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon " mdui-tooltip="{content: 'Refresh/刷新'}">
         <i class="mdui-icon material-icons">refresh</i>
       </a>
     </div>
@@ -22,30 +37,31 @@
       <div class="mdui-row">
         <div class="mdui-col-sm-12 mdui-col-md-12">
           <div class="mdui-card " style="margin-block: 10px;">
-            <div class="mdui-card-content"><i class="mdui-icon material-icons">info_outline</i> NataChat is a Open Soucre Project on Github.
-              <a class=" mdui-ripple mdui-text-color-black-text" href="https://github.com/ZGIT-Network/NataChat" target="_blank">Click here to Repository</a>
+            <div class="mdui-card-content" >
+                <i class='mdui-icon material-icons'>info_outline</i> <div class="lang" key="NatachatGithub" style="display:inline;">NataChat is a Open Soucre Project on Github.</div>
+                <a class='mdui-ripple mdui-text-color-black-text lang' href='https://github.com/ZGIT-Network/NataChat' target='_blank' key="GoToGithub">Click here to Repository</a>
             </div>
           </div>
          <div class="mdui-panel" mdui-panel>
           <div class="mdui-panel-item mdui-panel-item-open" style="margin-block: 10px;" >
-            <div class="mdui-panel-item-header">Config
+            <div class="mdui-panel-item-header"><div class="lang" key="Config" style="display:inline"></div>
             <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-panel-item-body">
               <div class="mdui-textfield">
-                <label class="mdui-textfield-label">Server Address</label>
+                <label class="mdui-textfield-label lang" key="Server Address"></label>
                 <input class="mdui-textfield-input" id='host' placeholder="Server ip" value="ws://127.0.0.1:8765" />
-                <button class="mdui-btn mdui-shadow-3 mdui-ripple" onclick="connect()" id="con">Connect to a Natachat Server</button>
+                <button class="mdui-btn mdui-shadow-3 mdui-ripple lang" onclick="connect()" id="con" key="Connect to a Natachat Server"></button>
               </div>
               <div class="mdui-textfield">
-                <label class="mdui-textfield-label">Username</label>
+                <label class="mdui-textfield-label lang" key="Username"></label>
                 <input class="mdui-textfield-input" id='username' maxlength="25" placeholder="username">
               </div>
             </div>
           </div>
         </div>
           <div class="mdui-card " style="margin-block: 10px;">
-            <div class="mdui-card-primary">Message</div>
+            <div class="mdui-card-primary lang" key="Message"></div>
             <div class="mdui-card-content">
               <div style="height:500px; overflow-y:auto;" class="mdui-shadow-0" id="content">
                 <ul class="mdui-list ">
@@ -54,10 +70,10 @@
                 </ul>
               </div>
               <div class="mdui-textfield">
-                <label class="mdui-textfield-label">Input</label>
-                <textarea class="mdui-textfield-input" id="msg" rows="5" maxlength="500" placeholder="Enter here..." disabled onkeyup="EnterKey()"></textarea>
+                <label class="mdui-textfield-label lang" key="Input"></label>
+                <textarea class="mdui-textfield-input" placeholder="Enter Here..." id="msg" rows="5" maxlength="500" disabled onkeyup="EnterKey()"></textarea>
               </div>
-              <button onclick="send()" id="send" class="mdui-btn mdui-shadow-3 mdui-ripple" disabled>Send
+              <button onclick="send()" id="send" class="mdui-btn mdui-shadow-3 mdui-ripple" disabled><div class="lang" key="Send" style="display:inline"></div>
                 <i class="mdui-icon material-icons">&#xe163;</i>
               </button>
             </div>
@@ -66,18 +82,69 @@
       </div>
     </div>
     
-    <div class="mdui-dialog" id="dialog">
-  <div class="mdui-dialog-title" id="dialog-title">Warning</div>
+<div class="mdui-dialog" id="dialog">
+  <div class="mdui-dialog-title lang" key="Warning" id="dialog-title"></div>
   <div class="mdui-dialog-content" id="dialog-info"></div>
   <div class="mdui-dialog-actions">
-    <button class="mdui-btn mdui-ripple" id="dialog-btn" mdui-dialog-confirm>OK</button>
+    <button class="mdui-btn mdui-ripple lang" key="OK" id="dialog-btn" mdui-dialog-confirm>OK</button>
   </div>
 </div>
+<script src="https://fastly.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js">
+    </script>
+<script type="text/javascript" src="language.json"></script>
+<script>
+
+//语言库一（前端语言库）
+
+// The default language is English
+var lang = "en";
+// Check for localStorage support
+if('localStorage' in window){
+   var lang = localStorage.getItem('lang') || navigator.language.slice(0, 2);
+   if (!Object.keys(arrLang).includes(lang)) lang = 'en';
+}
+
+$(document).ready(function() {
+  $(".lang").each(function(index, element) {
+    $(this).text(arrLang[lang][$(this).attr("key")]);
+  });
+});
+
+// get/set the selected language
+$(".translate").click(function() {
+  var lang = $(this).attr("id");
+  window.location.reload();
+  // update localStorage key
+  if('localStorage' in window){
+    localStorage.setItem('lang', lang);
+    console.log( localStorage.getItem('lang') );
+  }
+
+  $(".lang").each(function(index, element) {
+    $(this).text(arrLang[lang][$(this).attr("key")]);
+  });
+});
+
+      </script>
+<script>
+    
+    //语言库2 后端js语言库
+    if (lang == "zh") {
+        var LanguageJson = arrLang.zh;
+    } 
+    if (lang == "en"){
+        var LanguageJson = arrLang.en;
+    }
+    if (lang == "jp"){
+        var LanguageJson = arrLang.jp;
+    }
+</script>
     <script>
+    ///////////////////////////////////////////////////////
+        // console.log(LanguageJson.Input);
         var $ = mdui.$;
         var inst = new mdui.Dialog('#dialog');
-      var connections = false;
-
+        var connections = false;
       window.onload = function autoconnect() {
         var id = "";
         id = Math.ceil(Math.random() * 10000) ;
@@ -87,6 +154,7 @@
         };
         document.getElementById('username').value = document.cookie;
         setTimeout(connect(), 5000);
+
 
       };
       function EnterKey(event) {
@@ -98,29 +166,37 @@
 
       function connect() {
         if (username.value == "") {
-          mdui.snackbar({
-            message: 'Please set a username!',
+            if (lang == "zh") {
+                mdui.snackbar({
+            message: LanguageJson.Pleasesetausername,
             position: 'right-bottom',
           });
+            }else{
+          mdui.snackbar({
+            message: LanguageJson.Pleasesetausername,
+            position: 'right-bottom',
+          });
+            }
         } else {
           document.cookie = document.getElementById('username').value;
 
           if (connections == false) {
+              
             console.log('Connecting...') ;
             var status1 = 0;
             //ws = new WebSocket(host.value+':'+ port.value)
             ws = new WebSocket(host.value + '/user/' + username.value) ;
             ws.onopen = function(evt) {
-              console.log('New Connection Connected! Tips: Testing XSS filtering has been enabled. Some XSS commands can be filtered, but it is still being updated! Unfiltered and filtered information can be viewed through Web console.');
+              console.log(XSSWARN);
                 
               mdui.snackbar({
-                message: 'Server Connected!',
+                message: LanguageJson.ServerConnected,
                 position: 'right-bottom',
               });
             };
             ws.onmessage = function(evt) {
               writeToScreen(evt.data);
-              document.getElementById('con').innerHTML = "DISCONNECT";
+              document.getElementById('con').innerHTML = LanguageJson.DISCONNECT;
               document.getElementById('host').disabled = true ;
               document.getElementById('username').disabled = true ;
               status1++;
@@ -131,14 +207,14 @@
               connections = true;
             };
             ws.onerror = function() {
-              console.log('%cConnecting Failed!', 'color: red') ;
+              console.log('%c'+ConnectingFailed, 'color: red') ;
               mdui.snackbar({
-                message: 'Can\'t connect to the server. Is the server IP and port correct? Is the server started?',
+                message: LanguageJson.CannotConnect,
                 position: 'right-bottom',
               });
-              document.getElementById('dialog-info').innerHTML = "Can\'t connect to the server. Is the server IP and port correct? Is the server started?"
-          document.getElementById('dialog-title').innerHTML = "Warning"
-          document.getElementById('dialog-btn').innerHTML = "I know"
+              document.getElementById('dialog-info').innerHTML = LanguageJson.CannotConnect;
+          document.getElementById('dialog-title').innerHTML = LanguageJson.Warning
+          document.getElementById('dialog-btn').innerHTML = LanguageJson.Iknow
           inst.open();
               //writeToScreen("<p style=\'color: #610B0B;\'>Can\'t connect to the server. Is the server IP and port correct? Is the server started?</p>");
               connections = false;
@@ -155,10 +231,10 @@
           connections = false;
           // writeToScreen('Disconnected!');
           mdui.snackbar({
-            message: 'Disconnected',
+            message: LanguageJson.DISCONNECT,
             position: 'right-bottom',
           });
-          document.getElementById('con').innerHTML = "Connect to a Natachat Server";
+          document.getElementById('con').innerHTML = LanguageJson.ConnecttoaNatachatServer;
           document.getElementById('host').disabled = false ;
           document.getElementById('username').disabled = false;
           // document.getElementById('status').style.visibility="hidden"
@@ -166,7 +242,7 @@
           //document.getElementById('clear').disabled = true
           document.getElementById('msg').disabled = true;
 
-          console.log('Disconnect!');
+          console.log(Disconnect);
         };
       };
       function send() {
@@ -174,12 +250,12 @@
         if (ws.readyState === 1) {
           if (message == '' || message == ' \n') {
               mdui.snackbar({
-            message: 'Cannot send empty message to server!',
+            message: LanguageJson.Cannotsendemptymessagetoserver,
             position: 'right-bottom',
           });
-          document.getElementById('dialog-info').innerHTML = "Cannot send empty message to server!"
-          document.getElementById('dialog-title').innerHTML = "Warning"
-          document.getElementById('dialog-btn').innerHTML = "I know"
+          document.getElementById('dialog-info').innerHTML = LanguageJson.Cannotsendemptymessagetoserver;
+          document.getElementById('dialog-title').innerHTML = Warning
+          document.getElementById('dialog-btn').innerHTML = Iknow
           inst.open();
             // writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
           } else {
@@ -198,15 +274,15 @@
           // document.getElementById('clo').disabled = true
           // document.getElementById('clear').disabled = true
           document.getElementById('msg').disabled = true;
-          document.getElementById('con').innerHTML = "Connect to a Natachat Server";
+          document.getElementById('con').innerHTML = LanguageJson.ConnecttoaNatachatServer;
           // writeToScreen("<p style='color: red;'>Server Connection Lost!</p>");
           mdui.snackbar({
-            message: 'Server Connection Lost!',
+            message: LanguageJson.ServerConnectionLost,
             position: 'right-bottom',
           });
-          document.getElementById('dialog-info').innerHTML = "Cannot send empty message to server!"
-          document.getElementById('dialog-title').innerHTML = "Warning"
-          document.getElementById('dialog-btn').innerHTML = "Reload"
+          document.getElementById('dialog-info').innerHTML = LanguageJson.Cannotsendemptymessagetoserver;
+          document.getElementById('dialog-title').innerHTML = LanguageJson.Warning;
+          document.getElementById('dialog-btn').innerHTML = LanguageJson.Reload;
           $('#dialog').on('confirm.mdui.dialog', function () {
               window.location.reload()
                 console.log('confirm');
@@ -216,7 +292,7 @@
       };
       function writeToScreen(message) {
         var pre = document.createElement("li");
-        pre.setAttribute("class", "mdui-list-item mdui-ripple");
+        pre.setAttribute("class", "mdui-list-item mdui-ripple item-body");
         mdui.mutation();
         var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "");
 
@@ -225,7 +301,7 @@
         output.appendChild(pre);
 
         console.log(message);
-        console.log('已过滤：\n' + msg);
+        console.log('Filtered/已过滤：\n' + msg);
 
       };
 
@@ -239,7 +315,11 @@
         var elem = document.getElementById('output');
         elem.removeChild(elem);
       };
+      
+        
+
       </script>
+      
   </body>
 
 </html>
