@@ -29,7 +29,7 @@ async def talk(websockets, path):
         logging.error(err)
         del cs[websockets]
         print(log_time + 'A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
-        logging.info('A WebSocket Client Disconnected. IP' + websockets.remote_address)
+        logging.info('A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
 
 
 print(log_time + 'server running on [localhost:8765]')
