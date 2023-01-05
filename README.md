@@ -22,10 +22,13 @@ websockets
 wheel
 prompt_toolkit
 logging
+pycryptodome
+pyDes
+split
 ````
 或使用此指令：
 
-``pip3 install  asyncio websockets wheel prompt_toolkit logging``
+``pip3 install  asyncio websockets wheel prompt_toolkit logging pycryptodome pyDes split``
 
 ****
 #### 关于客户端：
