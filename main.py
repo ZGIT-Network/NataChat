@@ -12,8 +12,6 @@ import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
-BLOCK_SIZE = 64
-
 
 log_time = time.strftime('[%y-%m-%d %H:%M:%S]')
 msg_time = time.strftime('[%Y-%m-%d %H:%M:%S]')
@@ -22,7 +20,7 @@ cs = {}
 
 def add_to_16(value):
     while len(value) % 16 != 0:
-        value += '\0'
+        value += '%s'
     return str.encode(value)
     
 async def talk(websockets, path):
@@ -45,8 +43,8 @@ async def talk(websockets, path):
                 key = subaeskey
                 text = message
                 aes = AES.new(add_to_16(key), AES.MODE_ECB)
-                base64_decrypted = base64.decodebytes(text.encode())
-                decrypted_text = str(aes.decrypt(base64_decrypted),encoding='utf-8').replace('\0','') 
+                base64_decrypted = base64.decodebytes(text.encode(encoding='utf-8'))
+                decrypted_text = str(aes.decrypt(base64_decrypted),encoding='utf-8').replace('%s','') 
                 msg = f"{msg_time} {cs[websockets]} ({websockets.remote_address[0]}) #   { decrypted_text }"
                 print("Not decrypted: "+message)
                 print("Decrypted: "+msg)
@@ -55,8 +53,8 @@ async def talk(websockets, path):
     except Exception as err:
         logging.error(err)
         del cs[websockets]
-        print(log_time + 'A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
-        logging.info('A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
+        print(log_time + 'A WebSocket Client Disconnected. IP: ' + websockets.remote_address[0])
+        logging.info('A WebSocket Client Disconnected. IP: ' + websockets.remote_address[0])
 
 
 print(log_time + 'server running on [localhost:8765]')
