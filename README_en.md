@@ -1,6 +1,6 @@
 # NataChat
 
-A simple HTML5 + Python online chat room. Start main.py directly.
+A simple HTML+Python anonymous online chat room that supports AES encrypted communication. Start main.py directly.
 
  English | [中文](https://github.com/ZGIT-Network/NataChat)
  
