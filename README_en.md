@@ -18,18 +18,21 @@ Demo Site:[https://natachat.zyghit.cn/](https://natachat.zyghit.cn/)
 Server Python version: **Python version above 3.10**
 
 **Note: ** Please use ** pip install ** to install the following module dependencies before using:
-
 ````
 asyncio
 websockets
 wheel
-prompt_ toolkit
+prompt_toolkit
 logging
+pycryptodome
+pyDes
+split
 ````
 
 Or use this command:
 
-``pip install asyncio websockets wheel prompt_toolkit logging``
+``pip3 install  asyncio websockets wheel prompt_toolkit logging pycryptodome pyDes split``
+
 
 ****
 #### About the client:
