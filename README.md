@@ -1,5 +1,5 @@
 # NataChat
-一个简单的HTML5 + Python在线聊天室,直接启动main.py即可
+一个简单的，支持 AES 加密通信的 HTML+Python 匿名在线聊天室,直接启动main.py即可
 
  [English](https://github.com/ZGIT-Network/NataChat/blob/main/README_en.md) | 中文
 
