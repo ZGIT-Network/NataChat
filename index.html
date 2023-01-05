@@ -5,9 +5,8 @@
     <meta charset="utf-8">
     <title class="lang" key="Title">NataChat Demo</title>
     <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css" />
-    <script src="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js">
-    </script>
-    
+    <script src="https://fastly.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.bootcss.com/crypto-js/3.1.9-1/crypto-js.js"></script>
   </head>
   
   <body class="mdui-theme-primary-indigo">
@@ -139,14 +138,18 @@ $(".translate").click(function() {
         var LanguageJson = arrLang.jp;
     }
 </script>
-   <script>
-      //信息处理 information processing
+    <script>
         var $ = mdui.$;
+        document.getElementById('indexhtml').lang = lang;
+        
         var inst = new mdui.Dialog('#dialog');
         var connections = false;
+        var aesKey = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        console.log("AES-KEY: "+aesKey);
+        writeToScreen(LanguageJson.encryptedmessage);
         window.onload = function autoconnect() {
         var id = "";
-        id = getCookie('UserID')
+        id = getCookie('UserID');
         if (id == ""){
           id = Math.ceil(Math.random() * 10000) ;
           setCookie('UserID', id, 365);
@@ -201,7 +204,7 @@ $(".translate").click(function() {
             console.log('Connecting...') ;
             var status1 = 0;
             //ws = new WebSocket(host.value+':'+ port.value)
-            ws = new WebSocket(host.value + '/user/' + username.value + getCookie('UserID')) ;
+            ws = new WebSocket(host.value + '/user/' + username.value + getCookie('UserID')+'||'+aesKey) ;
             ws.onopen = function(evt) {
               console.log(LanguageJson.XSSWARN);
                 
@@ -276,8 +279,15 @@ $(".translate").click(function() {
           inst.open();
             // writeToScreen("<p style='color: #610B0B;'>Cannot send empty message to server!</p>");
           } else {
-
-            ws.send(message);
+              //加密信息
+            var encrypt = CryptoJS.AES.encrypt(message, CryptoJS.enc.Utf8.parse(aesKey),  // 参数1=密钥, 参数2=加密内容
+              {
+                            mode: CryptoJS.mode.ECB, // 为DES的工作方式
+                            padding: CryptoJS.pad.ZeroPadding  // 当加密后密文长度达不到指定整数倍(8个字节、16个字节)则填充对应字符
+                     }
+                ).toString(); // toString=转字符串类型
+            console.log("Encrypted/已加密："+encrypt); // 控制台打印 
+            ws.send(encrypt);
             document.getElementById('msg').value = "";
 
           };
@@ -313,12 +323,12 @@ $(".translate").click(function() {
         mdui.mutation();
         var msg = message.replace(/<style.*?>|<\/style>/ig, "").replace(/<link.*?>|<\/link>/ig, "").replace(/<script.*?>|<\/script>/ig, "").replace(/onerror=".*?"/ig, "").replace(/onclick=".*?"/ig, "").replace(/onerror=.*?/ig, "").replace(/<iframe.*?/ig, "").replace(/onclick=.*?/ig, "").replace(/<embed.*?/ig, "").replace(/<input.*?/ig, "").replace(/<iframe.*?>|<\/iframe>/ig, "").replace(/<textarea.*?>|<\/textarea>/ig, "").replace(/<meta.*?>|<\/meta>/ig, "").replace(/javascript:*?/ig, "").replace(/onresize*?/ig, "").replace(/onload*?/ig, "").replace(/mouseenter*?/ig, "").replace(/onplay=*?/ig, "").replace(/onplaying*?/ig, "").replace(/oncanplay*?/ig, "").replace(/<video.*?/ig, "").replace(/<canvas.*?/ig, "").replace(/\n/ig, "<br>");
         
-        pre.innerHTML = decodeURI(msg).replace(/<iframe.*?>|<\/iframe>/ig, "");
+        pre.innerHTML = msg.replace(/<iframe.*?>|<\/iframe>/ig, "");
 
         output.appendChild(pre);
 
-        console.log(decodeURI(message));
-        console.log('Filtered/已过滤：\n' + decodeURI(msg).replace(/<iframe.*?>|<\/iframe>/ig, ""));
+        console.log(message);
+        console.log('Filtered/已过滤：\n' + msg.replace(/<iframe.*?>|<\/iframe>/ig, ""));
 
       };
 
@@ -332,11 +342,15 @@ $(".translate").click(function() {
         var elem = document.getElementById('output');
         elem.removeChild(elem);
       };
-      
+      function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+    };
+
         
 
       </script>
-      
   </body>
 
 </html>
