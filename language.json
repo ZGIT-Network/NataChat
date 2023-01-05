@@ -25,7 +25,8 @@ var arrLang = {
     "Reload":"Reload",
     "Disconnect":"Disconnect!",
     "Connecting":"Connecting...",
-    "ConnecttoaNatachatServer":"Connect to a Natachat Server"
+    "ConnecttoaNatachatServer":"Connect to a Natachat Server",
+    "encryptedmessage":"When your message is transmitted to the NataChat server, it is encrypted by AES-256-ECB random key to ensure the security of your message."
   },
   "zh": {
     "Title": "NataChat 预览 v2.0",
@@ -53,9 +54,10 @@ var arrLang = {
     "Reload":"重载",
     "Disconnect":"连接断开！",
     "Connecting":"连接中",
-    "ConnecttoaNatachatServer":"连接到 NataChat 服务器"
+    "ConnecttoaNatachatServer":"连接到 NataChat 服务器",
+    "encryptedmessage":"您的消息传输到 NataChat 服务器时经过 AES-256-ECB 随机密钥加密以保证您的消息安全。"
   },
-  "jp": {
+  "ja": {
     "Title": "NataChat Demo v2.0",
     "NatachatGithub": "NataChat は Github 上のオープンソースプロジェクトです。",
     "GoToGithub": "ここをクリックしてリポジトリに移動",
@@ -81,6 +83,7 @@ var arrLang = {
     "Reload":"さいかじゅう",
     "Disconnect":"接続切断！",
     "Connecting":"接続中",
-    "ConnecttoaNatachatServer":"NataChat サーバへの接続"
+    "ConnecttoaNatachatServer":"NataChat サーバへの接続",
+    "encryptedmessage":"メッセージが NataChat サーバに送信されたときに AES-256-ECB ランダム鍵で暗号化され、メッセージの安全性が保証されます。"
   }
 }
