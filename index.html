@@ -326,15 +326,10 @@ $(".translate").click(function() {
         pre.innerHTML = msg.replace(/<iframe.*?>|<\/iframe>/ig, "");
 
         output.appendChild(pre);
-
+        document.getElementById('content').scrollTop = document.getElementById('content').scrollHeight;
         console.log(message);
         console.log('Filtered/已过滤：\n' + msg.replace(/<iframe.*?>|<\/iframe>/ig, ""));
 
-      };
-
-      function updateScroll() {
-        var element = document.getElementById("output");
-        element.scrollTop = element.scrollHeight;
       };
 
       function clear() {
