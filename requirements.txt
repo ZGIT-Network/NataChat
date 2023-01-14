@@ -1,0 +1,8 @@
+asyncio
+websockets
+wheel
+prompt_toolkit
+logging
+pycryptodome
+pyDes
+split
