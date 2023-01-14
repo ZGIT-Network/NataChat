@@ -28,7 +28,7 @@ split
 ````
 或使用此指令：
 
-``pip3 install  asyncio websockets wheel prompt_toolkit logging pycryptodome pyDes split``
+``pip3 install -r requirements.txt``
 
 ****
 #### 关于客户端：
