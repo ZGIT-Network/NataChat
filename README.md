@@ -1,7 +1,7 @@
 # NataChat
 一个简单的，支持 AES 加密通信的 HTML+Python 匿名在线聊天室,直接启动Chat-Server.py即可
 
- [English](README_en.md) | 中文 | [繁体中文](README_tc.md)
+中文 | [繁体中文](README_tc.md) | [English](README_en.md)
 
 代码比较基础，新手小白作品，大佬勿喷
 
