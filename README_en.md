@@ -2,7 +2,7 @@
 
 A simple HTML+Python anonymous online chat room that supports AES encrypted communication. Start main.py directly.
 
- English | [中文](https://github.com/ZGIT-Network/NataChat)
+[中文](README.md) | [繁体中文](README_tc.md) | [English](README_en.md)
  
  The front end uses [MDUI](https://mdui.org), and the back end only forwards messages. It is written in Python.
 
