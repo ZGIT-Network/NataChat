@@ -1,7 +1,7 @@
 # NataChat
-一个简单的，支持 AES 加密通信的 HTML+Python 匿名在线聊天室,直接启动main.py即可
+一个简单的，支持 AES 加密通信的 HTML+Python 匿名在线聊天室,直接启动Chat-Server.py即可
 
- [English](https://github.com/ZGIT-Network/NataChat/blob/main/README_en.md) | 中文
+ [English](README_en.md) | 中文 | [繁体中文](README_tc.md)
 
 代码比较基础，新手小白作品，大佬勿喷
 
@@ -11,7 +11,7 @@
 
 ***
 #### Server端启动指令：
-``python main.py``
+``python Chat-Server.py``
 
 Server端Python版本:  **Python3.10以上版本** 
 
