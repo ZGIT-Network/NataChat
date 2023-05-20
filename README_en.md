@@ -1,6 +1,6 @@
 # NataChat
 
-A simple HTML+Python anonymous online chat room that supports AES encrypted communication. Start main.py directly.
+A simple HTML+Python anonymous online chat room that supports AES encrypted communication. Start Chat-Server.py directly.
 
 [中文](README.md) | [繁体中文](README_tc.md) | [English](README_en.md)
  
@@ -13,7 +13,7 @@ Demo Site:[https://natachat.zyghit.cn/](https://natachat.zyghit.cn/)
 ***
 #### Server side startup command:
 
-``python main.py``
+``python Chat-Server.py``
 
 Server Python version: **Python version above 3.10**
 
