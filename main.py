@@ -1,65 +1,106 @@
 import websockets
 import asyncio
 import time
-import atexit
 import logging
-from prompt_toolkit import prompt
 import random
 import string
 from urllib.parse import unquote
-import split
 import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
+import atexit
+import os
 
-cs = {}
+class ChatServer:
+    def __init__(self, host, port, aes_key_length):
+        self.host = host
+        self.port = port
+        self.aes_key_length = aes_key_length
+        self.cs = {}
 
-def add_to_16(value):
-    while len(value) % 16 != 0:
-        value += '%s'
-    return str.encode(value)
-    
-async def talk(websockets, path):
-    
-    
-    try:
-        while True:
+    async def start(self):
+        logging.info(f'server running on [{self.host}:{self.port}]')
+        start_server = websockets.serve(self.talk, self.host, self.port)
+        async with start_server:
+            await start_server.serve_forever()
+
+    async def talk(self, websocket, path):
+        try:
+            if not self.is_valid_path(path):
+                raise ValueError('Invalid path format')
             
-            if (not websockets in cs.keys()):  # 新的访问申请
-                LocalAESKEY = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
-                userinfo = unquote(str(path[6:]),'utf-8')
-                username = userinfo.split('||')[0]
-                subaeskey = userinfo.split('||')[1]
-                cs[websockets] = username
-                msg = time.strftime('[%y-%m-%d %H:%M:%S]', time.localtime()) + 'Hello Welcome to Natachat Server! User ' + username
-                print(time.strftime('[%y-%m-%d %H:%M:%S]', time.localtime()) + 'New client connected, User IP' + websockets.remote_address[0] + ' Username '+username+'\nSubmitted AESKEY:'+subaeskey )
-                logging.info('New client connected, User IP' + websockets.remote_address[0] + ' Username '+username+'\nSubmitted AESKEY:'+subaeskey )
+            username, subaeskey = self.extract_user_info(path)
+            if not self.is_valid_aes_key(subaeskey):
+                raise ValueError('Invalid AES key length')
+
+            async with websocket:
+                if not self.is_new_user(websocket):
+                    await websocket.send('Please enter a valid username and AES key to connect')
+                    return
                 
+                self.add_user(websocket, username)
                 
-            else:
-                message = str(await websockets.recv())
-                # AES-256-ECB
-                key = subaeskey
-                text = message
-                aes = AES.new(add_to_16(key), AES.MODE_ECB)
-                base64_decrypted = base64.decodebytes(text.encode(encoding='utf-8'))
-                decrypted_text = str(aes.decrypt(base64_decrypted),encoding='utf-8').replace('%s','') 
-                msg = f"{time.strftime('[%y-%m-%d %H:%M:%S]', time.localtime())} {cs[websockets]} ({websockets.remote_address[0]}) #   { decrypted_text }"
-                print("Not decrypted: "+message)
-                print("Decrypted: "+msg)
+                while True:
+                    message = await websocket.recv()
+                    
+                    key = subaeskey.encode('utf-8')
+                    text = message
+                    
+                    try:
+                        aes = AES.new(key, AES.MODE_ECB)
+                        base64_decrypted = base64.decodebytes(text.encode(encoding='utf-8'))
+                        decrypted_text = str(aes.decrypt(base64_decrypted), encoding='utf-8').replace('%s', '')
+                        logging.info(f"[{username}] ({websocket.remote_address[0]}) # {decrypted_text}")
+                        await asyncio.wait([ws.send(decrypted_text) for ws in self.cs.keys()]) 
+                    except ValueError as e:
+                        logging.error(f"[{username}] ({websocket.remote_address[0]}) # Invalid message format: {e}")
+                        await websocket.send('Invalid message format')
+                    except Exception as e:
+                        logging.error(f"[{username}] ({websocket.remote_address[0]}) # Error decrypting message: {e}")
+                        await websocket.send('Error decrypting message')
 
-            await asyncio.wait([ws.send(msg) for ws in cs.keys()])
-    except Exception as err:
-        logging.error(err)
-        del cs[websockets]
-        print(time.strftime('[%y-%m-%d %H:%M:%S]', time.localtime()) + 'A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
-        logging.info('A WebSocket Client Disconnected. IP' + websockets.remote_address[0])
+        except ValueError as e:
+            logging.error(f"Invalid path or user info: {e}")
+            await websocket.send("Invalid path or user info")
+        except Exception as e:
+            logging.error(f"Error processing message: {e}")
+            await websocket.send("Error processing message")
+        finally:
+            self.remove_user(websocket)
+    
+    def is_valid_path(self, path):
+        return path.startswith('/chat/') and path.count('||') == 1
 
-print(time.strftime('[%y-%m-%d %H:%M:%S]', time.localtime()) + 'server running on [localhost:8765]')
-logging.info('server running on [localhost:8765]')
+    def extract_user_info(self, path):
+        userinfo = unquote(path[6:],'utf-8')
+        username, subaeskey = userinfo.split('||')
+        return username, subaeskey
 
+    def is_valid_aes_key(self, subaeskey):
+        return len(subaeskey) == self.aes_key_length
 
+    def is_new_user(self, websocket):
+        return websocket not in self.cs.keys()
 
-start_server = websockets.serve(talk, 'localhost', 8765)
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+    def add_user(self, websocket, username):
+        self.cs[websocket] = username
+        logging.info(f'New client connected, User IP {websocket.remote_address[0]} Username {username} Submitted AESKEY: {subaeskey}')
+
+    def remove_user(self, websocket):
+        if websocket in self.cs:
+            logging.info(f"A WebSocket Client Disconnected. IP: {websocket.remote_address[0]} Username: {self.cs[websocket]}")
+            del self.cs[websocket]
+
+if __name__ == '__main__':
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    handler = logging.FileHandler('chat.log')
+    handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+    logger.addHandler(handler)
+
+    chat_server = ChatServer('localhost', 8765, 32)
+    atexit.register(handler.close)
+    try:
+        asyncio.run(chat_server.start())
+    except Exception as e:
+        logging.error(e)
