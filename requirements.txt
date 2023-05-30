@@ -1,8 +1,7 @@
-asyncio
 websockets
-wheel
-prompt_toolkit
+asyncio
 logging
-pycryptodome
-pyDes
-split
+string
+urllib.parse
+base64
+Crypto
