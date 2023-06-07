@@ -17,14 +17,13 @@ Server端Python版本:  **Python3.10以上版本**
 
 **注意:** 使用前请使用 **pip install** 安装下列模块依赖：
 ````
-asyncio
 websockets
-wheel
-prompt_toolkit
+asyncio
 logging
-pycryptodome
-pyDes
-split
+string
+urllib.parse
+base64
+Crypto
 ````
 或使用此指令：
 
