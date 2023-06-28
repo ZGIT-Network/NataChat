@@ -1,15 +1,11 @@
 import websockets
 import asyncio
-import time
-import logging
 import random
 import string
 from urllib.parse import unquote
 import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
-import atexit
-import os
 
 class ChatServer:
     def __init__(self, host, port, aes_key_length):
@@ -19,7 +15,7 @@ class ChatServer:
         self.cs = {}
 
     async def start(self):
-        logging.info(f'server running on [{self.host}:{self.port}]')
+        print(f'Server running on {self.host}:{self.port}')
         start_server = websockets.serve(self.talk, self.host, self.port)
         async with start_server:
             await start_server.serve_forever()
@@ -28,7 +24,7 @@ class ChatServer:
         try:
             if not self.is_valid_path(path):
                 raise ValueError('Invalid path format')
-            
+
             username, subaeskey = self.extract_user_info(path)
             if not self.is_valid_aes_key(subaeskey):
                 raise ValueError('Invalid AES key length')
@@ -37,42 +33,42 @@ class ChatServer:
                 if not self.is_new_user(websocket):
                     await websocket.send('Please enter a valid username and AES key to connect')
                     return
-                
-                self.add_user(websocket, username)
-                
+
+                self.add_user(websocket, username, subaeskey)
+
                 while True:
                     message = await websocket.recv()
-                    
+
                     key = subaeskey.encode('utf-8')
                     text = message
-                    
+
                     try:
                         aes = AES.new(key, AES.MODE_ECB)
                         base64_decrypted = base64.decodebytes(text.encode(encoding='utf-8'))
                         decrypted_text = str(aes.decrypt(base64_decrypted), encoding='utf-8').replace('%s', '')
-                        logging.info(f"[{username}] ({websocket.remote_address[0]}) # {decrypted_text}")
-                        await asyncio.wait([ws.send(decrypted_text) for ws in self.cs.keys()]) 
+                        print(f"[{username}] ({websocket.remote_address[0]}) # {decrypted_text}")
+                        await asyncio.wait([ws.send(decrypted_text) for ws in self.cs.keys()])
                     except ValueError as e:
-                        logging.error(f"[{username}] ({websocket.remote_address[0]}) # Invalid message format: {e}")
+                        print(f"[{username}] ({websocket.remote_address[0]}) # Invalid message format: {e}")
                         await websocket.send('Invalid message format')
                     except Exception as e:
-                        logging.error(f"[{username}] ({websocket.remote_address[0]}) # Error decrypting message: {e}")
+                        print(f"[{username}] ({websocket.remote_address[0]}) # Error decrypting message: {e}")
                         await websocket.send('Error decrypting message')
 
         except ValueError as e:
-            logging.error(f"Invalid path or user info: {e}")
+            print("Invalid path or user info")
             await websocket.send("Invalid path or user info")
         except Exception as e:
-            logging.error(f"Error processing message: {e}")
+            print("Error processing message")
             await websocket.send("Error processing message")
         finally:
             self.remove_user(websocket)
-    
+
     def is_valid_path(self, path):
         return path.startswith('/chat/') and path.count('||') == 1
 
     def extract_user_info(self, path):
-        userinfo = unquote(path[6:],'utf-8')
+        userinfo = unquote(path[6:], 'utf-8')
         username, subaeskey = userinfo.split('||')
         return username, subaeskey
 
@@ -82,25 +78,19 @@ class ChatServer:
     def is_new_user(self, websocket):
         return websocket not in self.cs.keys()
 
-    def add_user(self, websocket, username):
+    def add_user(self, websocket, username, subaeskey):
         self.cs[websocket] = username
-        logging.info(f'New client connected, User IP {websocket.remote_address[0]} Username {username} Submitted AESKEY: {subaeskey}')
+        print(f'New client connected, User IP {websocket.remote_address[0]} Username {username} Submitted AESKEY: {subaeskey}')
 
     def remove_user(self, websocket):
         if websocket in self.cs:
-            logging.info(f"A WebSocket Client Disconnected. IP: {websocket.remote_address[0]} Username: {self.cs[websocket]}")
+            print(f"A WebSocket Client Disconnected. IP: {websocket.remote_address[0]} Username: {self.cs[websocket]}")
             del self.cs[websocket]
 
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    handler = logging.FileHandler('chat.log')
-    handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
-    logger.addHandler(handler)
 
+if __name__ == '__main__':
     chat_server = ChatServer('localhost', 8765, 32)
-    atexit.register(handler.close)
     try:
         asyncio.run(chat_server.start())
     except Exception as e:
-        logging.error(e)
+        print(e)
