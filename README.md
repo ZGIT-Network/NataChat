@@ -6,20 +6,10 @@
 前端使用了MDUI，后端仅作消息转发，使用Python编写
 
 ***
-#### Python PIP安装
-````
-websockets
-asyncio
-string
-urllib.parse
-base64
-Crypto
-````
-或使用此指令：
+#### 安装依赖项
+``sudo apt-get install build-essential libssl-dev``
 
 ``pip3 install -r requirements.txt``
-
-****
 #### 启动服务端：
 ``python main.py``
 
@@ -27,7 +17,7 @@ Crypto
 
 #### 关于客户端：
 
-代码库内的``index.html``即标准客户端，仅包含在线客户端的使用~~更多功能请自行编写~~,[客户端](https://Github.com/ZGIT-Network/NataChat-Client)
+代码库内的``index.html``即标准客户端，仅包含在线客户端的使用更多功能请自行编写
 
 部署时需要注意：
 
