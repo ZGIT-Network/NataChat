@@ -5,7 +5,7 @@
 
 前端使用了MDUI，后端仅作消息转发，使用Python编写
 
-***
+### 部署服务端
 #### 安装依赖项
 ``sudo apt-get install build-essential libssl-dev``
 
@@ -14,6 +14,15 @@
 ``python main.py``
 
 服务端最低运行Python版本:  **Python3.10及以上版本** 
+
+### 部署客户端
+#### Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/zgit-network/natachat)
+
+#### Github Pages
+[Fork Repo](https://github.com/zgit-network/natachat/fork)
+
+Start Settings > Pages > Branch > main > Save
 
 #### 关于客户端：
 
