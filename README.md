@@ -10,7 +10,6 @@
 ````
 websockets
 asyncio
-logging
 string
 urllib.parse
 base64
