@@ -26,7 +26,11 @@ Start Settings > Pages > Branch > main > Save
 
 #### 关于客户端：
 
-代码库内的``index.html``即标准客户端，仅包含在线客户端的使用更多功能请自行编写
+目前,有两个客户端,分别为``standard client``和``client``两个版本
+
+``client``版本目前是不开放公测的
+
+[standard client](/) | [client](https://github.com/zgit-network/)
 
 部署时需要注意：
 
