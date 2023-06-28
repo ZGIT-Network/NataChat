@@ -1,11 +1,8 @@
 import websockets
 import asyncio
-import random
-import string
 from urllib.parse import unquote
 import base64
 from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
 
 class ChatServer:
     def __init__(self, host, port, aes_key_length):
@@ -79,12 +76,16 @@ class ChatServer:
         return websocket not in self.cs.keys()
 
     def add_user(self, websocket, username, subaeskey):
-        self.cs[websocket] = username
+        self.cs[websocket] = {
+            'username': username,
+            'subaeskey': subaeskey
+        }
         print(f'New client connected, User IP {websocket.remote_address[0]} Username {username} Submitted AESKEY: {subaeskey}')
 
     def remove_user(self, websocket):
         if websocket in self.cs:
-            print(f"A WebSocket Client Disconnected. IP: {websocket.remote_address[0]} Username: {self.cs[websocket]}")
+            username = self.cs[websocket]['username']
+            print(f"A WebSocket Client Disconnected. IP: {websocket.remote_address[0]} Username: {username}")
             del self.cs[websocket]
 
 
