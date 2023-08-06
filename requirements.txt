@@ -1,7 +1,8 @@
 websockets
+pycryptodomex
+AES
 asyncio
-logging
-string
-urllib.parse
+urllib
+unquote
 base64
 Crypto
